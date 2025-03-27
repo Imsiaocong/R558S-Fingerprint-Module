@@ -1,9 +1,11 @@
-#include <SoftwareSerial.h>
+// ESP32-S3 Fingerprint Module interface
+#include <Arduino.h>
 
-// Define software serial pins
-#define FINGERPRINT_RX 2
-#define FINGERPRINT_TX 3
-SoftwareSerial fpsSerial(FINGERPRINT_RX, FINGERPRINT_TX);
+// Define hardware serial pins for ESP32-S3
+#define FINGERPRINT_RX 18
+#define FINGERPRINT_TX 17
+// Use Hardware Serial1 instead of SoftwareSerial
+HardwareSerial fpsSerial(1); // Use UART1
 
 // Package format constants
 const byte HEADER_1 = 0xEF;
@@ -68,10 +70,10 @@ void setup() {
   // Hardware Serial for PC communication
   Serial.begin(9600);
   
-  // Software Serial for module communication
-  fpsSerial.begin(57600);
+  // Hardware Serial for module communication
+  fpsSerial.begin(57600, SERIAL_8N1, FINGERPRINT_RX, FINGERPRINT_TX);
   
-  Serial.println("R558S Fingerprint Module Test");
+  Serial.println("R558S Fingerprint Module Test - ESP32-S3");
   Serial.println("Commands:");
   Serial.println("h - Send handshake command");
   Serial.println("c - Send handshake (alternative)");
